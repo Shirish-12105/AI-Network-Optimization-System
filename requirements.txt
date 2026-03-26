@@ -1,5 +1,7 @@
 streamlit
+pandas
+seaborn
 joblit
 numpy
 scikit-leran
-tensorflow
+
