@@ -1,7 +1,8 @@
-# AI Network Optimization System 🚀
+# AI Network Optimization System 
+https://colab.research.google.com/drive/1easZvqSZfCiT3_qGyDf7CQK0ztTuxV1p#scrollTo=EFyiZLLze8dS
 
 ## 📌 Overview
-This project predicts network latency and optimizes bandwidth using Machine Learning and Deep Learning techniques.
+ AI system to predict network latency and recommend optimal bandwidth using Machine Learning and Deep Learning.
 
 ## 🎯 Problem
 Network performance depends on:
@@ -17,7 +18,7 @@ This system predicts latency and suggests optimal bandwidth.
 - Bandwidth optimization logic
 - Synthetic data generation
 
-## 🧠 Tech Stack
+##  Tech Stack
 - Python
 - NumPy, Pandas
 - Scikit-learn
@@ -33,7 +34,7 @@ This system predicts latency and suggests optimal bandwidth.
 1. Open notebook in Google Colab
 2. Run all cells
 
-## 🚀 Future Improvements
+##  Future Improvements
 - Real-world dataset integration
 - Deploy as web app
 - Real-time monitoring dashboard
