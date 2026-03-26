@@ -1,12 +1,18 @@
 import streamlit as st
-import joblib
-import numpy as np
 
-# Load models
-rf_model = joblib.load("rf_model.pkl")
-nn_model = joblib.load("nn_model.pkl")
-scaler_X = joblib.load("scaler_X.pkl")
-scaler_y = joblib.load("scaler_y.pkl")
+st.title("AI Network Optimization System 🚀")
+
+# Inputs
+users = st.number_input("Number of Users", min_value=1, value=50)
+bandwidth = st.number_input("Bandwidth", min_value=1, value=100)
+packet_loss = st.number_input("Packet Loss (%)", min_value=0.0, value=1.0)
+
+# Button
+if st.button("Predict"):
+    # Simple logic (temporary)
+    result = (users * bandwidth) / (1 + packet_loss)
+    
+    st.success(f"Optimized Network Score: {result:.2f}")
 
 st.title("AI Network Optimization System 🚀")
 
