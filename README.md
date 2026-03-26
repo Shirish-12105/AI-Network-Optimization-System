@@ -25,8 +25,8 @@ This system predicts latency and suggests optimal bandwidth.
 
 ## 📊 Output Example
 - RF Predicted Latency: 164.2
-- NN Predicted Latency: 143.38
-- Optimal Bandwidth: 490
+- NN Predicted Latency: 490
+- Optimal Bandwidth: 173.88
 
 ## ▶️ Run the Project
 1. Open notebook in Google Colab
