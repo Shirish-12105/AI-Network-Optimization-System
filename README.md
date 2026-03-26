@@ -1,5 +1,5 @@
 # AI Network Optimization System 
-https://colab.research.google.com/drive/1easZvqSZfCiT3_qGyDf7CQK0ztTuxV1p#scrollTo=EFyiZLLze8dS
+**Project Notebook:** [Open in Goggle collab](https://colab.research.google.com/drive/1easZvqSZfCiT3_qGyDf7CQK0ztTuxV1p#scrollTo=EFyiZLLze8dS)
 
 ## 📌 Overview
  AI system to predict network latency and recommend optimal bandwidth using Machine Learning and Deep Learning.
