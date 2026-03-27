@@ -1,7 +1,2 @@
 streamlit
-pandas
-seaborn
-joblib
-numpy
-scikit-learn
 
