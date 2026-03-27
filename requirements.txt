@@ -1,4 +1,5 @@
 streamlit
-pandas
+joblit
 numpy
 scikit-learn
+tensorflow
