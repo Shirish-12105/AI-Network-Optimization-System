@@ -2,4 +2,4 @@ streamlit
 joblit
 numpy
 scikit-learn
-tensorflow
+tensorflow-cpu
