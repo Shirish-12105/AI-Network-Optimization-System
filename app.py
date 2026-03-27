@@ -1,91 +1,94 @@
 import streamlit as st
-import pandas as pd
+import joblib
 import numpy as np
-from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
 
-# ---------------- PAGE SETUP ----------------
+# -------------------------------
+# Load models (cached)
+# -------------------------------
+@st.cache_resource
+def load_models():
+    rf_model = joblib.load("rf_model.pkl")
+    nn_model = joblib.load("nn_model.pkl")
+    scaler_X = joblib.load("scaler_X.pkl")
+    scaler_y = joblib.load("scaler_y.pkl")
+    return rf_model, nn_model, scaler_X, scaler_y
+
+rf_model, nn_model, scaler_X, scaler_y = load_models()
+
+# -------------------------------
+# UI
+# -------------------------------
 st.set_page_config(page_title="AI Network Optimization", layout="centered")
 
-st.title("🚀 AI Network Optimization System")
-st.markdown("Optimize network performance using Machine Learning")
+st.title(" AI Network Optimization System")
+st.markdown("Compare Machine Learning and Deep Learning predictions")
 
-# ---------------- LOAD DATA ----------------
-try:
-    df = pd.read_csv("network_data.csv")  # make sure this file is in repo
-    st.success("✅ Dataset loaded successfully")
+# Inputs
+col1, col2 = st.columns(2)
 
-    st.subheader("📂 Dataset Preview")
-    st.dataframe(df.head())
+with col1:
+    users = st.number_input("Users", min_value=1, value=50)
 
-except:
-    st.warning("⚠️ Dataset not found. Using sample data instead.")
+with col2:
+    bandwidth = st.number_input("Bandwidth", min_value=1, value=100)
 
-    df = pd.DataFrame({
-        "users": [10, 20, 30, 40, 50, 60, 70],
-        "bandwidth": [50, 60, 70, 80, 90, 100, 110],
-        "packet_loss": [1, 2, 1.5, 2.5, 1, 3, 2],
-        "score": [500, 800, 1200, 1500, 2000, 2300, 2600]
-    })
+packet_loss = st.slider("Packet Loss (%)", 0.0, 10.0, 1.0)
 
-# ---------------- TRAIN MODEL ----------------
-X = df[["users", "bandwidth", "packet_loss"]]
-y = df["score"]
+# -------------------------------
+# Predict
+# -------------------------------
+if st.button("Predict"):
 
-model = LinearRegression()
-model.fit(X, y)
+    with st.spinner("Calculating..."):
 
-# ---------------- INPUT SECTION ----------------
-st.subheader("📊 Enter Network Parameters")
+        input_data = [[users, bandwidth, packet_loss]]
+        input_scaled = scaler_X.transform(input_data)
 
-users = st.number_input("👥 Number of Users", min_value=1, value=50)
-bandwidth = st.number_input("📶 Bandwidth (Mbps)", min_value=1, value=100)
-packet_loss = st.number_input("📉 Packet Loss (%)", min_value=0.0, max_value=100.0, value=1.0)
+        # RF Prediction
+        rf_latency = rf_model.predict(input_data)[0]
 
-# ---------------- BUTTON ----------------
-if st.button("⚡ Optimize Network"):
+        # NN Prediction
+        nn_scaled = nn_model.predict(input_scaled, verbose=0)
+        nn_latency = scaler_y.inverse_transform(nn_scaled)[0][0]
+        nn_latency = max(0, nn_latency)
 
-    # Prediction
-    input_data = np.array([[users, bandwidth, packet_loss]])
-    prediction = model.predict(input_data)[0]
+        # -------------------------------
+        # Display Results
+        # -------------------------------
+        st.subheader("📊 Model Comparison")
 
-    # Result
-    st.success(f"✅ Predicted Network Score: {prediction:.2f}")
+        col1, col2 = st.columns(2)
 
-    # ---------------- PERFORMANCE ----------------
-    st.subheader("📈 Performance Status")
+        col1.metric("RF Latency", f"{round(rf_latency,2)} ms")
+        col2.metric("NN Latency", f"{round(nn_latency,2)} ms")
 
-    if prediction > 2000:
-        st.success("🚀 Excellent Performance")
-    elif prediction > 1000:
-        st.warning("⚠️ Average Performance")
-    else:
-        st.error("❌ Poor Performance")
+        # -------------------------------
+        # Graph: Latency vs Bandwidth
+        # -------------------------------
+        st.subheader("📈 Latency vs Bandwidth")
 
-    # ---------------- GRAPH ----------------
-    st.subheader("📊 Network Insights")
+        bandwidth_range = np.linspace(10, 500, 50)
+        rf_vals = []
+        nn_vals = []
 
-    chart_data = pd.DataFrame({
-        "Metric": ["Users", "Bandwidth", "Packet Loss"],
-        "Value": [users, bandwidth, packet_loss]
-    })
+        for bw in bandwidth_range:
+            inp = [[users, bw, packet_loss]]
 
-    st.bar_chart(chart_data.set_index("Metric"))
+            rf_vals.append(rf_model.predict(inp)[0])
 
-    # ---------------- RECOMMENDATIONS ----------------
-    st.subheader("🧠 AI Recommendations")
+            inp_scaled = scaler_X.transform(inp)
+            nn_pred = nn_model.predict(inp_scaled, verbose=0)
+            val = scaler_y.inverse_transform(nn_pred)[0][0]
+            nn_vals.append(max(0, val))
 
-    if packet_loss > 2:
-        st.error("❌ High packet loss! Improve network stability.")
+        fig, ax = plt.subplots()
+        ax.plot(bandwidth_range, rf_vals, label="Random Forest")
+        ax.plot(bandwidth_range, nn_vals, label="Neural Network")
 
-    if bandwidth < 50:
-        st.warning("⚠️ Increase bandwidth for better performance.")
+        ax.set_xlabel("Bandwidth")
+        ax.set_ylabel("Latency")
+        ax.set_title("Latency vs Bandwidth")
+        ax.legend()
 
-    if users > 80:
-        st.info("ℹ️ Too many users. Consider load balancing.")
-
-    if packet_loss <= 2 and bandwidth >= 50:
-        st.success("✅ Network conditions look good!")
-
-# ---------------- FOOTER ----------------
-st.markdown("---")
-st.caption("AI Network Optimization System | Built with Streamlit & ML")
+        st.pyplot(fig)
