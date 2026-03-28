@@ -4,39 +4,50 @@
 🔗 [Click here to use the app](https://ai-network-optimization-system-mejx4ut8pwt7dego5jcwuz.streamlit.app/)
 
 ## 📌 Overview
- AI system to predict network latency and recommend optimal bandwidth using Machine Learning and Deep Learning.
+An AI-based system to predict network latency and recommend optimal bandwidth using Machine Learning and Deep Learning models.
 
-## 🎯 Problem
+🚀 Achieves improved latency prediction using intelligent model selection.
+
+---
+
+## 📊 Problem Statement
 Network performance depends on:
 - Number of users
 - Bandwidth
 - Packet loss
 
-This system predicts latency and suggests optimal bandwidth.
+👉 This system predicts latency and dynamically suggests optimal bandwidth.
 
-## ⚙️ Features
-- Random Forest model for latency prediction
-- Neural Network (Deep Learning) model
-- Bandwidth optimization logic
-- Synthetic data generation
+---
 
-##  Tech Stack
+## ⚙️ Tech Stack
 - Python
 - NumPy, Pandas
-- Scikit-learn
-- TensorFlow / Keras
+- Scikit-learn (Random Forest)
+- TensorFlow / Keras (Neural Network)
+- Streamlit
 
-## 📊 Output Example
-- RF Predicted Latency: 164.2
-- NN Predicted Latency: 490
-- Optimal Bandwidth: 173
-- 
+---
 
-## ▶️ Run the Project
-1. Open notebook in Google Colab
-2. Run all cells
+## 🧠 Models Used
+- Random Forest Regressor  
+- Neural Network (Deep Learning)
 
-##  Future Improvements
-- Real-world dataset integration
-- Deploy as web app
-- Real-time monitoring dashboard
+---
+
+## 📈 Results
+
+| Model | Predicted Latency |
+|------|------------------|
+| Random Forest | 164.2 ms |
+| Neural Network | 1734ms |
+
+### 🚀 Optimal Bandwidth
+👉 173 Mbps
+
+---
+
+## 🔍 Insights
+- Random Forest performs better with lower latency prediction  
+- Neural Network shows higher variance due to limited/synthetic data  
+- Optimal bandwidth is selected
